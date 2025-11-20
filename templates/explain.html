@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Logic Explorer | Anon</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Poppins', sans-serif; background: #f9f9f9; color: #333; margin: 0; padding: 40px; }
+        .container { max-width: 900px; margin: auto; background: white; padding: 40px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        
+        header { border-bottom: 1px solid #eee; padding-bottom: 20px; margin-bottom: 30px; }
+        h1 { font-size: 1.8rem; color: hsl(0, 0%, 13%); margin: 0; }
+        p.subtitle { color: hsl(0, 0%, 47%); margin-top: 5px; }
+
+        .hero { display: flex; align-items: center; gap: 30px; margin-bottom: 40px; background: #fff5f6; padding: 20px; border-radius: 10px; border: 1px solid #ffe0e3; }
+        .hero img { width: 100px; border-radius: 8px; border: 2px solid white; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .hero-text h2 { margin: 0 0 5px 0; font-size: 1.2rem; }
+        .hero-text p { margin: 0; font-size: 0.9rem; color: #666; }
+
+        .logic-section h3 { font-size: 1.1rem; margin-bottom: 20px; }
+        
+        .score-row { display: flex; align-items: center; margin-bottom: 15px; padding: 10px; border-radius: 8px; transition: background 0.2s; }
+        .score-row:hover { background: #f4f4f4; }
+        
+        .score-img { width: 50px; height: 50px; object-fit: cover; border-radius: 5px; margin-right: 15px; }
+        .score-info { flex: 1; }
+        .score-name { font-size: 0.9rem; font-weight: 600; }
+        
+        .bar-container { width: 200px; height: 8px; background: #eee; border-radius: 4px; margin: 0 20px; overflow: hidden; }
+        .bar-fill { height: 100%; background: hsl(353, 100%, 78%); border-radius: 4px; }
+        
+        .score-val { font-weight: 700; color: hsl(353, 100%, 78%); width: 60px; text-align: right; }
+
+        .math-box { background: #eee; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 0.85rem; color: #555; margin-top: 40px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Recommendation Logic</h1>
+        <p class="subtitle">Inside the AI Brain: Item-Based Collaborative Filtering</p>
+    </header>
+
+    <div class="hero">
+        <img src="{{ url_for('static', filename='images/products/' + product.image) }}" alt="{{ product.name }}">
+        <div class="hero-text">
+            <p>Target Product</p>
+            <h2>{{ product.name }}</h2>
+            <p>Category: {{ product.category }}</p>
+        </div>
+    </div>
+
+    <div class="logic-section">
+        <h3>Why did we recommend these items?</h3>
+        <p style="font-size: 0.9rem; color: #666; margin-bottom: 25px;">
+            Our algorithm calculates the <strong>Cosine Similarity</strong> between the purchase history of this item and every other item in the store. 
+            A higher score means customers who bought <em>{{ product.name }}</em> frequently bought these items too.
+        </p>
+
+        {% for item in data %}
+        <div class="score-row">
+            <img src="{{ url_for('static', filename='images/products/' + item.image) }}" class="score-img" alt="{{ item.name }}">
+            <div class="score-info">
+                <div class="score-name">{{ item.name }}</div>
+            </div>
+            <div class="bar-container">
+                <div class="bar-fill" style="width: {{ item.bar_width }}%;"></div>
+            </div>
+            <div class="score-val">{{ item.score }}%</div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="math-box">
+        <strong>The Math:</strong> Similarity(A, B) = (A • B) / (||A|| * ||B||)<br>
+        Where A and B are transaction vectors for each product. 
+    </div>
+    
+    <div style="text-align: center; margin-top: 30px;">
+        <a href="/" style="text-decoration: none; color: white; background: #333; padding: 10px 25px; border-radius: 5px; font-size: 0.9rem;">Back to Store</a>
+    </div>
+</div>
+
+</body>
+</html>

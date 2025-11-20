@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anon - eCommerce Website</title>
+
+  <link rel="shortcut icon" href="{{ url_for('static', filename='images/logo/favicon.ico') }}" type="image/x-icon">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style-prefix.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <style>
+    /* --- ENHANCED MODAL STYLES --- */
+    .rec-modal {
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.7); /* Darker background for focus */
+        z-index: 1000;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        backdrop-filter: blur(5px); /* Modern blur effect */
+    }
+    .rec-modal.active { display: flex; }
+
+    .rec-content {
+        background: white;
+        padding: 0; /* Reset padding */
+        border-radius: 15px;
+        max-width: 800px;
+        width: 95%;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+    .rec-close {
+        position: absolute; top: 15px; right: 20px;
+        font-size: 28px; cursor: pointer; color: #aaa;
+        z-index: 10; transition: color 0.2s;
+    }
+    .rec-close:hover { color: #333; }
+
+    /* Success Header */
+    .modal-header-success {
+        background: #f0fdf4;
+        border-bottom: 1px solid #dcfce7;
+        padding: 20px 30px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+    .check-icon {
+        width: 30px; height: 30px;
+        background: #22c55e;
+        color: white;
+        border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 18px;
+    }
+    .modal-header-success h2 {
+        color: #15803d; font-size: 1.2rem; margin: 0; font-weight: 600;
+    }
+
+    /* Product Summary Section */
+    .added-product-summary {
+        padding: 25px 30px;
+        display: flex;
+        gap: 20px;
+        align-items: center;
+        border-bottom: 1px solid #eee;
+    }
+    .summary-img {
+        width: 80px; height: 80px; object-fit: cover;
+        border-radius: 8px; border: 1px solid #eee;
+    }
+    .summary-details h3 {
+        font-size: 1rem; color: #333; margin-bottom: 5px;
+    }
+    .summary-details p {
+        font-size: 0.9rem; color: #666;
+    }
+    .summary-actions {
+        margin-left: auto;
+        display: flex; gap: 10px;
+    }
+    .btn-modal {
+        padding: 10px 20px; border-radius: 6px;
+        font-size: 0.9rem; font-weight: 500; cursor: pointer;
+        transition: all 0.2s;
+    }
+    .btn-view-cart {
+        background: white; border: 1px solid #ddd; color: #333;
+    }
+    .btn-view-cart:hover { background: #f9f9f9; border-color: #ccc; }
+    
+    .btn-checkout {
+        background: hsl(0, 0%, 13%); border: 1px solid hsl(0, 0%, 13%); color: white;
+    }
+    .btn-checkout:hover { background: hsl(353, 100%, 78%); border-color: hsl(353, 100%, 78%); }
+
+    /* Recommendations Section */
+    .rec-section {
+        padding: 25px 30px;
+        background: #fafafa;
+    }
+    .rec-section h4 {
+        font-size: 1rem; color: #555; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .rec-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 15px;
+    }
+    .rec-item {
+        background: white;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        padding: 10px;
+        text-align: center;
+        transition: transform 0.2s;
+    }
+    .rec-item:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+    .rec-item img {
+        width: 100%; height: 150px; object-fit: contain;
+        margin-bottom: 10px;
+    }
+    .rec-title {
+        font-size: 0.85rem; color: #333; margin-bottom: 5px;
+        white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .rec-price {
+        color: hsl(353, 100%, 78%); font-weight: 700; font-size: 0.9rem;
+    }
+    .rec-add-btn {
+        margin-top: 8px; width: 100%;
+        padding: 6px; background: white;
+        border: 1px solid hsl(353, 100%, 78%);
+        color: hsl(353, 100%, 78%);
+        border-radius: 4px; font-size: 0.8rem; cursor: pointer;
+    }
+    .rec-add-btn:hover { background: hsl(353, 100%, 78%); color: white; }
+  </style>
+</head>
+
+<body>
+
+  <div class="overlay" data-overlay></div>
+
+  <div class="rec-modal" id="rec-modal">
+    <div class="rec-content">
+        <span class="rec-close" id="rec-close">&times;</span>
+        
+        <div class="modal-header-success">
+            <div class="check-icon"><ion-icon name="checkmark-outline"></ion-icon></div>
+            <h2>Successfully Added to Cart!</h2>
+        </div>
+
+        <div class="added-product-summary">
+            <img src="" alt="Product" id="summary-img" class="summary-img">
+            <div class="summary-details">
+                <h3 id="summary-name">Product Name</h3>
+                <p id="summary-price">Price</p>
+                <p style="font-size: 0.8rem; color: #888;">Qty: 1</p>
+            </div>
+            <div class="summary-actions">
+                <button class="btn-modal btn-view-cart">View Cart</button>
+                <button class="btn-modal btn-checkout">Checkout</button>
+            </div>
+        </div>
+
+        <div class="rec-section">
+            <h4>You Might Also Like</h4>
+            <div class="rec-grid" id="rec-grid">
+                <p style="grid-column:1/-1; text-align:center; color:#888;">Loading personalized picks...</p>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <header>
+    <div class="header-main">
+      <div class="container">
+        <a href="#" class="header-logo">
+          <img src="{{ url_for('static', filename='images/logo/logo.svg') }}" alt="Anon's logo" width="120" height="36">
+        </a>
+        <div class="header-search-container">
+          <input type="search" name="search" class="search-field" placeholder="Enter your product name...">
+          <button class="search-btn">
+            <ion-icon name="search-outline"></ion-icon>
+          </button>
+        </div>
+        <div class="header-user-actions">
+          <button class="action-btn"><ion-icon name="person-outline"></ion-icon></button>
+          <button class="action-btn">
+            <ion-icon name="heart-outline"></ion-icon>
+            <span class="count">0</span>
+          </button>
+          <button class="action-btn">
+            <ion-icon name="bag-handle-outline"></ion-icon>
+            <span class="count">0</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <nav class="desktop-navigation-menu">
+      <div class="container">
+        <ul class="desktop-menu-category-list">
+          <li class="menu-category"><a href="#" class="menu-title">Home</a></li>
+          <li class="menu-category"><a href="#" class="menu-title">Categories</a></li>
+          <li class="menu-category"><a href="#" class="menu-title">Men's</a></li>
+          <li class="menu-category"><a href="#" class="menu-title">Women's</a></li>
+          <li class="menu-category"><a href="#" class="menu-title">Jewelry</a></li>
+          <li class="menu-category"><a href="#" class="menu-title">Perfume</a></li>
+          <li class="menu-category"><a href="#" class="menu-title">Blog</a></li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <div class="banner">
+      <div class="container">
+        <div class="slider-container has-scrollbar">
+          <div class="slider-item">
+            <img src="{{ url_for('static', filename='images/banner-1.jpg') }}" alt="women's latest fashion sale" class="banner-img">
+            <div class="banner-content">
+              <h2 class="banner-title">Women's latest fashion sale</h2>
+              <p class="banner-text">starting at &dollar; <b>20</b>.00</p>
+              <a href="#" class="banner-btn">Shop now</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-container">
+      <div class="container">
+
+        <div class="sidebar has-scrollbar" data-mobile-menu>
+          <div class="sidebar-category">
+            <div class="sidebar-top">
+              <h2 class="sidebar-title">Category</h2>
+              <button class="sidebar-close-btn" data-mobile-menu-close-btn>
+                <ion-icon name="close-outline"></ion-icon>
+              </button>
+            </div>
+            <ul class="sidebar-menu-category-list">
+              <li class="sidebar-menu-category">
+                <button class="sidebar-accordion-menu" data-accordion-btn>
+                  <div class="menu-title-flex">
+                    <img src="{{ url_for('static', filename='images/icons/dress.svg') }}" width="20" height="20" class="menu-title-img">
+                    <p class="menu-title">Clothes</p>
+                  </div>
+                </button>
+              </li>
+              <li class="sidebar-menu-category">
+                <button class="sidebar-accordion-menu" data-accordion-btn>
+                  <div class="menu-title-flex">
+                    <img src="{{ url_for('static', filename='images/icons/shoes.svg') }}" width="20" height="20" class="menu-title-img">
+                    <p class="menu-title">Footwear</p>
+                  </div>
+                </button>
+              </li>
+              <li class="sidebar-menu-category">
+                <button class="sidebar-accordion-menu" data-accordion-btn>
+                  <div class="menu-title-flex">
+                    <img src="{{ url_for('static', filename='images/icons/jewelry.svg') }}" width="20" height="20" class="menu-title-img">
+                    <p class="menu-title">Jewelry</p>
+                  </div>
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="product-box">
+          <div class="product-main">
+            <h2 class="title">New Products</h2>
+            <div class="product-grid">
+
+              <div class="showcase">
+                <div class="showcase-banner">
+                  <img src="{{ url_for('static', filename='images/products/jacket-3.jpg') }}" alt="Mens Winter Leathers Jackets" width="300" class="product-img default">
+                  <img src="{{ url_for('static', filename='images/products/jacket-4.jpg') }}" alt="Mens Winter Leathers Jackets" width="300" class="product-img hover">
+                  <p class="showcase-badge angle pink">new</p>
+                  <div class="showcase-actions">
+                    <button class="btn-action"><ion-icon name="heart-outline"></ion-icon></button>
+                    <button class="btn-action"><ion-icon name="eye-outline"></ion-icon></button>
+                    <button class="btn-action"><ion-icon name="repeat-outline"></ion-icon></button>
+                    <button class="btn-action add-to-cart-btn" 
+                            data-product-id="jacket-3"
+                            data-product-name="Mens Winter Leathers Jackets"
+                            data-product-price="$48.00"
+                            data-product-img="{{ url_for('static', filename='images/products/jacket-3.jpg') }}">
+                      <ion-icon name="bag-add-outline"></ion-icon>
+                    </button>
+                  </div>
+                </div>
+                <div class="showcase-content">
+                  <a href="#" class="showcase-category">Jacket</a>
+                  <a href="#"><h3 class="showcase-title">Mens Winter Leathers Jackets</h3></a>
+                  <div class="price-box">
+                    <p class="price">$48.00</p>
+                    <del>$75.00</del>
+                  </div>
+                </div>
+              </div>
+
+              <div class="showcase">
+                <div class="showcase-banner">
+                  <img src="{{ url_for('static', filename='images/products/shirt-1.jpg') }}" alt="Pure Garment Dyed Cotton Shirt" width="300" class="product-img default">
+                  <img src="{{ url_for('static', filename='images/products/shirt-2.jpg') }}" alt="Pure Garment Dyed Cotton Shirt" width="300" class="product-img hover">
+                  <div class="showcase-actions">
+                    <button class="btn-action"><ion-icon name="heart-outline"></ion-icon></button>
+                    <button class="btn-action"><ion-icon name="eye-outline"></ion-icon></button>
+                    <button class="btn-action"><ion-icon name="repeat-outline"></ion-icon></button>
+                    <button class="btn-action add-to-cart-btn" 
+                            data-product-id="shirt-1"
+                            data-product-name="Pure Garment Dyed Cotton Shirt"
+                            data-product-price="$45.00"
+                            data-product-img="{{ url_for('static', filename='images/products/shirt-1.jpg') }}">
+                      <ion-icon name="bag-add-outline"></ion-icon>
+                    </button>
+                  </div>
+                </div>
+                <div class="showcase-content">
+                  <a href="#" class="showcase-category">Shirt</a>
+                  <a href="#"><h3 class="showcase-title">Pure Garment Dyed Cotton Shirt</h3></a>
+                  <div class="price-box">
+                    <p class="price">$45.00</p>
+                    <del>$56.00</del>
+                  </div>
+                </div>
+              </div>
+
+              <div class="showcase">
+                <div class="showcase-banner">
+                  <img src="{{ url_for('static', filename='images/products/jacket-5.jpg') }}" alt="MEN Yarn Fleece Full-Zip Jacket" width="300" class="product-img default">
+                  <img src="{{ url_for('static', filename='images/products/jacket-6.jpg') }}" alt="MEN Yarn Fleece Full-Zip Jacket" width="300" class="product-img hover">
+                  <div class="showcase-actions">
+                    <button class="btn-action"><ion-icon name="heart-outline"></ion-icon></button>
+                    <button class="btn-action"><ion-icon name="eye-outline"></ion-icon></button>
+                    <button class="btn-action"><ion-icon name="repeat-outline"></ion-icon></button>
+                    <button class="btn-action add-to-cart-btn" 
+                            data-product-id="jacket-5"
+                            data-product-name="MEN Yarn Fleece Full-Zip Jacket"
+                            data-product-price="$58.00"
+                            data-product-img="{{ url_for('static', filename='images/products/jacket-5.jpg') }}">
+                      <ion-icon name="bag-add-outline"></ion-icon>
+                    </button>
+                  </div>
+                </div>
+                <div class="showcase-content">
+                  <a href="#" class="showcase-category">Jacket</a>
+                  <a href="#"><h3 class="showcase-title">MEN Yarn Fleece Full-Zip Jacket</h3></a>
+                  <div class="price-box">
+                    <p class="price">$58.00</p>
+                    <del>$65.00</del>
+                  </div>
+                </div>
+              </div>
+
+              <div class="showcase">
+                <div class="showcase-banner">
+                  <img src="{{ url_for('static', filename='images/products/clothes-3.jpg') }}" alt="Black Floral Wrap Midi Skirt" width="300" class="product-img default">
+                  <img src="{{ url_for('static', filename='images/products/clothes-4.jpg') }}" alt="Black Floral Wrap Midi Skirt" width="300" class="product-img hover">
+                  <div class="showcase-actions">
+                    <button class="btn-action"><ion-icon name="heart-outline"></ion-icon></button>
+                    <button class="btn-action"><ion-icon name="eye-outline"></ion-icon></button>
+                    <button class="btn-action"><ion-icon name="repeat-outline"></ion-icon></button>
+                    <button class="btn-action add-to-cart-btn" 
+                            data-product-id="clothes-3"
+                            data-product-name="Black Floral Wrap Midi Skirt"
+                            data-product-price="$25.00"
+                            data-product-img="{{ url_for('static', filename='images/products/clothes-3.jpg') }}">
+                      <ion-icon name="bag-add-outline"></ion-icon>
+                    </button>
+                  </div>
+                </div>
+                <div class="showcase-content">
+                  <a href="#" class="showcase-category">Skirt</a>
+                  <a href="#"><h3 class="showcase-title">Black Floral Wrap Midi Skirt</h3></a>
+                  <div class="price-box">
+                    <p class="price">$25.00</p>
+                    <del>$35.00</del>
+                  </div>
+                </div>
+              </div>
+
+              <div class="showcase">
+                <div class="showcase-banner">
+                  <img src="{{ url_for('static', filename='images/products/shoe-2.jpg') }}" alt="Casual Men's Brown shoes" width="300" class="product-img default">
+                  <img src="{{ url_for('static', filename='images/products/shoe-2_1.jpg') }}" alt="Casual Men's Brown shoes" width="300" class="product-img hover">
+                  <div class="showcase-actions">
+                    <button class="btn-action"><ion-icon name="heart-outline"></ion-icon></button>
+                    <button class="btn-action"><ion-icon name="eye-outline"></ion-icon></button>
+                    <button class="btn-action"><ion-icon name="repeat-outline"></ion-icon></button>
+                    <button class="btn-action add-to-cart-btn" 
+                            data-product-id="shoe-2"
+                            data-product-name="Casual Men's Brown shoes"
+                            data-product-price="$99.00"
+                            data-product-img="{{ url_for('static', filename='images/products/shoe-2.jpg') }}">
+                      <ion-icon name="bag-add-outline"></ion-icon>
+                    </button>
+                  </div>
+                </div>
+                <div class="showcase-content">
+                  <a href="#" class="showcase-category">Casual</a>
+                  <a href="#"><h3 class="showcase-title">Casual Men's Brown shoes</h3></a>
+                  <div class="price-box">
+                    <p class="price">$99.00</p>
+                    <del>$105.00</del>
+                  </div>
+                </div>
+              </div>
+
+              <div class="showcase">
+                <div class="showcase-banner">
+                  <img src="{{ url_for('static', filename='images/products/watch-3.jpg') }}" alt="Pocket Watch Leather Pouch" width="300" class="product-img default">
+                  <img src="{{ url_for('static', filename='images/products/watch-4.jpg') }}" alt="Pocket Watch Leather Pouch" width="300" class="product-img hover">
+                  <div class="showcase-actions">
+                    <button class="btn-action"><ion-icon name="heart-outline"></ion-icon></button>
+                    <button class="btn-action"><ion-icon name="eye-outline"></ion-icon></button>
+                    <button class="btn-action"><ion-icon name="repeat-outline"></ion-icon></button>
+                    <button class="btn-action add-to-cart-btn" 
+                            data-product-id="watch-3"
+                            data-product-name="Pocket Watch Leather Pouch"
+                            data-product-price="$150.00"
+                            data-product-img="{{ url_for('static', filename='images/products/watch-3.jpg') }}">
+                      <ion-icon name="bag-add-outline"></ion-icon>
+                    </button>
+                  </div>
+                </div>
+                <div class="showcase-content">
+                  <a href="#" class="showcase-category">Watches</a>
+                  <a href="#"><h3 class="showcase-title">Pocket Watch Leather Pouch</h3></a>
+                  <div class="price-box">
+                    <p class="price">$150.00</p>
+                    <del>$170.00</del>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-bottom">
+      <div class="container">
+        <img src="{{ url_for('static', filename='images/payment.png') }}" alt="payment method" class="payment-img">
+        <p class="copyright">
+          Copyright &copy; <a href="#">Anon</a> all rights reserved.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+  
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+</body>
+</html>
