@@ -1,0 +1,162 @@
+/* Chat Widget Container */
+.chat-widget {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 1000;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Floating Toggle Button */
+.chat-toggle-btn {
+    width: 60px;
+    height: 60px;
+    background: hsl(353, 100%, 78%);
+    border-radius: 50%;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.3s;
+    color: white;
+    font-size: 28px;
+    border: none;
+}
+
+.chat-toggle-btn:hover {
+    transform: scale(1.1);
+    background: hsl(0, 0%, 13%);
+}
+
+/* Chat Window */
+.chat-window {
+    position: absolute;
+    bottom: 80px;
+    right: 0;
+    width: 350px;
+    height: 500px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+    display: none; /* Hidden by default */
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid #eee;
+    animation: slideIn 0.3s ease-out;
+}
+
+.chat-window.active {
+    display: flex;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Header */
+.chat-header {
+    background: hsl(0, 0%, 13%);
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chat-header h3 { font-size: 1rem; margin: 0; font-weight: 600; }
+.close-chat { cursor: pointer; font-size: 1.2rem; }
+
+/* Messages Area */
+.chat-messages {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    background: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Bubbles */
+.message {
+    max-width: 80%;
+    padding: 10px 15px;
+    border-radius: 15px;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.message.bot {
+    background: white;
+    color: #333;
+    border-bottom-left-radius: 2px;
+    border: 1px solid #eee;
+    align-self: flex-start;
+}
+
+.message.user {
+    background: hsl(353, 100%, 78%);
+    color: white;
+    border-bottom-right-radius: 2px;
+    align-self: flex-end;
+}
+
+/* Product Suggestions inside Chat */
+.chat-product-card {
+    background: white;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 8px;
+    margin-top: 5px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    width: 100%;
+}
+
+.chat-product-img {
+    width: 50px; height: 50px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.chat-product-info h4 {
+    font-size: 0.8rem; margin: 0; color: #333;
+}
+
+.chat-product-info p {
+    font-size: 0.75rem; margin: 2px 0 0; color: hsl(353, 100%, 78%); font-weight: bold;
+}
+
+/* Input Area */
+.chat-input-area {
+    padding: 15px;
+    background: white;
+    border-top: 1px solid #eee;
+    display: flex;
+    gap: 10px;
+}
+
+.chat-input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    outline: none;
+}
+
+.chat-send-btn {
+    background: hsl(0, 0%, 13%);
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+}
+
+.chat-send-btn:hover { background: hsl(353, 100%, 78%); }
