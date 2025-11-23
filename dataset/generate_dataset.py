@@ -50,12 +50,17 @@ def generate_datasets():
         {'id': 'watch-4', 'image': 'watch-4.jpg', 'name': 'Pocket Watch Leather Pouch', 'category': 'Watches'},
     ]
 
-    # 2. Save Product Catalog
+    # --- NEW STEP: Add Prices to Products ---
+    for p in products:
+        # Assign a random price between $15 and $150
+        p['price'] = round(random.uniform(15.00, 150.00), 2)
+
+    # 2. Save Product Catalog (Now includes 'price' column)
     catalog_df = pd.DataFrame(products)
     if not os.path.exists('dataset'):
         os.makedirs('dataset')
     catalog_df.to_csv('dataset/products.csv', index=False)
-    print(f"✅ dataset/products.csv created with {len(products)} items.")
+    print(f"✅ dataset/products.csv created with prices.")
 
     # 3. Generate Synthetic Transactions
     # We simulate 50 users (ID 1000-1050) making 500 total purchases
@@ -72,13 +77,14 @@ def generate_datasets():
             'StockCode': product['id'],
             'Description': product['name'],
             'Quantity': quantity,
-            'UnitPrice': round(random.uniform(15.00, 150.00), 2),
+            # Use the specific price we assigned to the product above
+            'UnitPrice': product['price'],
             'Country': 'United Kingdom'
         })
 
     transactions_df = pd.DataFrame(transactions)
     transactions_df.to_csv('dataset/transactions.csv', index=False)
-    print(f"✅ dataset/transactions.csv created with 500 dummy transactions.")
+    print(f"✅ dataset/transactions.csv created.")
 
 if __name__ == "__main__":
     generate_datasets()

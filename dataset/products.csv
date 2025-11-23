@@ -1,44 +1,44 @@
-id,image,name,category
-1,1.jpg,Baby Fabric Shoes,Baby
-2,2.jpg,Mens Hoodies T-Shirt,Men
-3,3.jpg,Girls T-Shirt,Kids
-4,4.jpg,Woolen Hat For Men,Men
-belt,belt.jpg,Mens Leather Belt,Accessories
-clothes-1,clothes-1.jpg,Relaxed Short Sleeve T-Shirt,Women
-clothes-2,clothes-2.jpg,Girls Pink Embro Design Top,Women
-clothes-3,clothes-3.jpg,Black Floral Wrap Midi Skirt,Women
-clothes-4,clothes-4.jpg,Pure Garment Dyed Cotton Shirt,Women
-jacket-1,jacket-1.jpg,Mens Winter Leathers Jacket,Men
-jacket-2,jacket-2.jpg,Mens Winter Leathers Jacket,Men
-jacket-3,jacket-3.jpg,Mens Winter Leathers Jacket,Men
-jacket-4,jacket-4.jpg,Mens Winter Leathers Jacket,Men
-jacket-5,jacket-5.jpg,MEN Yarn Fleece Full-Zip Jacket,Men
-jacket-6,jacket-6.jpg,MEN Yarn Fleece Full-Zip Jacket,Men
-jewellery-1,jewellery-1.jpg,Rose Gold Peacock Earrings,Jewelry
-jewellery-2,jewellery-2.jpg,Platinum Zircon Classic Ring,Jewelry
-jewellery-3,jewellery-3.jpg,Silver Deer Heart Necklace,Jewelry
-party-wear-1,party-wear-1.jpg,Womens Party Wear Shoes,Women
-party-wear-2,party-wear-2.jpg,Womens Party Wear Shoes,Women
-perfume,perfume.jpg,Titan 100 Ml Womens Perfume,Perfume
-shampoo,shampoo.jpg,Shampoo Conditioner Packs,Cosmetics
-shirt-1,shirt-1.jpg,Pure Garment Dyed Cotton Shirt,Men
-shirt-2,shirt-2.jpg,Pure Garment Dyed Cotton Shirt,Men
-shoe-1,shoe-1.jpg,Mens Leather Formal Wear Shoes,Men
-shoe-1_1,shoe-1_1.jpg,Mens Leather Formal Wear Shoes,Men
-shoe-2,shoe-2.jpg,Casual Mens Brown Shoes,Men
-shoe-2_1,shoe-2_1.jpg,Casual Mens Brown Shoes,Men
-shoe-3,shoe-3.jpg,Boot With Suede Detail,Men
-shoe-4,shoe-4.jpg,Boot With Suede Detail,Men
-shoe-5,shoe-5.jpg,Boot With Suede Detail,Men
-shorts-1,shorts-1.jpg,Better Basics French Terry Sweatshorts,Men
-shorts-2,shorts-2.jpg,Better Basics French Terry Sweatshorts,Men
-sports-1,sports-1.jpg,Trekking & Running Shoes - Black,Sports
-sports-2,sports-2.jpg,Trekking & Running Shoes - Black,Sports
-sports-3,sports-3.jpg,Sports Claw Womens Shoes,Sports
-sports-4,sports-4.jpg,Sports Claw Womens Shoes,Sports
-sports-5,sports-5.jpg,Air Trekking Shoes - White,Sports
-sports-6,sports-6.jpg,Air Trekking Shoes - White,Sports
-watch-1,watch-1.jpg,Smart Watch Vital Plus,Watches
-watch-2,watch-2.jpg,Smart Watch Vital Plus,Watches
-watch-3,watch-3.jpg,Pocket Watch Leather Pouch,Watches
-watch-4,watch-4.jpg,Pocket Watch Leather Pouch,Watches
+id,image,name,category,price
+1,1.jpg,Baby Fabric Shoes,Baby,70.32
+2,2.jpg,Mens Hoodies T-Shirt,Men,23.04
+3,3.jpg,Girls T-Shirt,Kids,46.73
+4,4.jpg,Woolen Hat For Men,Men,82.44
+belt,belt.jpg,Mens Leather Belt,Accessories,149.61
+clothes-1,clothes-1.jpg,Relaxed Short Sleeve T-Shirt,Women,104.2
+clothes-2,clothes-2.jpg,Girls Pink Embro Design Top,Women,45.83
+clothes-3,clothes-3.jpg,Black Floral Wrap Midi Skirt,Women,30.79
+clothes-4,clothes-4.jpg,Pure Garment Dyed Cotton Shirt,Women,57.26
+jacket-1,jacket-1.jpg,Mens Winter Leathers Jacket,Men,34.59
+jacket-2,jacket-2.jpg,Mens Winter Leathers Jacket,Men,21.88
+jacket-3,jacket-3.jpg,Mens Winter Leathers Jacket,Men,46.26
+jacket-4,jacket-4.jpg,Mens Winter Leathers Jacket,Men,130.3
+jacket-5,jacket-5.jpg,MEN Yarn Fleece Full-Zip Jacket,Men,63.72
+jacket-6,jacket-6.jpg,MEN Yarn Fleece Full-Zip Jacket,Men,86.64
+jewellery-1,jewellery-1.jpg,Rose Gold Peacock Earrings,Jewelry,95.67
+jewellery-2,jewellery-2.jpg,Platinum Zircon Classic Ring,Jewelry,132.13
+jewellery-3,jewellery-3.jpg,Silver Deer Heart Necklace,Jewelry,110.6
+party-wear-1,party-wear-1.jpg,Womens Party Wear Shoes,Women,86.02
+party-wear-2,party-wear-2.jpg,Womens Party Wear Shoes,Women,41.74
+perfume,perfume.jpg,Titan 100 Ml Womens Perfume,Perfume,53.81
+shampoo,shampoo.jpg,Shampoo Conditioner Packs,Cosmetics,125.06
+shirt-1,shirt-1.jpg,Pure Garment Dyed Cotton Shirt,Men,30.01
+shirt-2,shirt-2.jpg,Pure Garment Dyed Cotton Shirt,Men,55.04
+shoe-1,shoe-1.jpg,Mens Leather Formal Wear Shoes,Men,51.06
+shoe-1_1,shoe-1_1.jpg,Mens Leather Formal Wear Shoes,Men,124.31
+shoe-2,shoe-2.jpg,Casual Mens Brown Shoes,Men,100.46
+shoe-2_1,shoe-2_1.jpg,Casual Mens Brown Shoes,Men,93.35
+shoe-3,shoe-3.jpg,Boot With Suede Detail,Men,46.84
+shoe-4,shoe-4.jpg,Boot With Suede Detail,Men,62.0
+shoe-5,shoe-5.jpg,Boot With Suede Detail,Men,30.29
+shorts-1,shorts-1.jpg,Better Basics French Terry Sweatshorts,Men,138.98
+shorts-2,shorts-2.jpg,Better Basics French Terry Sweatshorts,Men,67.16
+sports-1,sports-1.jpg,Trekking & Running Shoes - Black,Sports,55.9
+sports-2,sports-2.jpg,Trekking & Running Shoes - Black,Sports,86.0
+sports-3,sports-3.jpg,Sports Claw Womens Shoes,Sports,133.24
+sports-4,sports-4.jpg,Sports Claw Womens Shoes,Sports,107.21
+sports-5,sports-5.jpg,Air Trekking Shoes - White,Sports,63.44
+sports-6,sports-6.jpg,Air Trekking Shoes - White,Sports,122.6
+watch-1,watch-1.jpg,Smart Watch Vital Plus,Watches,146.89
+watch-2,watch-2.jpg,Smart Watch Vital Plus,Watches,89.64
+watch-3,watch-3.jpg,Pocket Watch Leather Pouch,Watches,67.6
+watch-4,watch-4.jpg,Pocket Watch Leather Pouch,Watches,91.57
