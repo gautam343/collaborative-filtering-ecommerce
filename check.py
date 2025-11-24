@@ -3,7 +3,7 @@ import os
 
 # 1. Configure your API key
 # Replace "YOUR_GEMINI_API_KEY_HERE" with your actual key
-api_key = "AIzaSyDjKvDkCRQBLeHyiDj0fZiDs6X0i3_aRRk"
+api_key = ""
 genai.configure(api_key=api_key)
 
 print("Checking available models for your API key...\n")
